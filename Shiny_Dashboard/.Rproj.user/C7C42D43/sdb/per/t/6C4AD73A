@@ -1,0 +1,17 @@
+{
+    "contents" : "\n# This is the user-interface definition of a Shiny web application.\n# You can find out more about building applications with Shiny here:\n#\n# http://shiny.rstudio.com\n#\n\nlibrary(shiny)\n\nshinyUI(fluidPage(\n\n  # Application title\n  titlePanel(\"Relation between age and reported injuries based on NEISS data\"),\n\n  # Sidebar with a slider input for number of bins\n\n  sliderInput(\"age\",label = h4(\"Choose Age Range: \"),\n                  min = 0,\n                  max = 100,\n                  value = c(20,30)),\n  \n  fluidRow(\n    column(6,\n           plotOutput(outputId = \"hist1\")\n           ),\n    column(6,\n           plotOutput(outputId = \"hist2\")\n           )\n  ),\n  \n  fluidRow(\n    column(6,\n           plotOutput(outputId= \"hist3\")\n           ),\n    column(6,\n           plotOutput(outputId= \"hist4\")\n    )\n    )\n))\n",
+    "created" : 1495915292064.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "938136949",
+    "id" : "6C4AD73A",
+    "lastKnownWriteTime" : 1495942219,
+    "path" : "G:/interviews/BI/BI_Developer_HW/BID_HW_Q4/ui.R",
+    "project_path" : "ui.R",
+    "properties" : {
+    },
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "type" : "r_source"
+}

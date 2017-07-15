@@ -1,0 +1,17 @@
+{
+    "contents" : "library(ggplot2)\nlibrary(dplyr)\nlibrary(scales)\nlibrary(treemap)\n\n\nNeiss_data<-read.csv(\"G:\\\\interviews\\\\BI\\\\BI_Developer_HW\\\\NEISS2014.csv\",sep= ',',header=TRUE)\nload(\"G:\\\\interviews\\\\BI\\\\BI_Developer_HW\\\\products.rda\")\nbody_part<-read.csv(\"G:\\\\interviews\\\\BI\\\\BI_Developer_HW\\\\BodyParts.csv\",sep= ',',header=TRUE)\ndiagCode<-read.csv(\"G:\\\\interviews\\\\BI\\\\BI_Developer_HW\\\\DiagnosisCodes.csv\",sep= ',',header=TRUE)\nlocale<-read.csv(\"G:\\\\interviews\\\\BI\\\\BI_Developer_HW\\\\Location .csv\",sep= ',',header=TRUE)\nfire<-read.csv(\"G:\\\\interviews\\\\BI\\\\BI_Developer_HW\\\\FMV .csv\",sep= ',',header=TRUE)\n\n\npro<-left_join(Neiss_data,products,by=c(\"prod1\"=\"code\"),copy=TRUE)%>% rename(product = title)\nbody<-left_join(pro,body_part,by=c(\"body_part\"=\"Code\"),copy=TRUE)\ndia<-left_join(body,diagCode,by=c(\"diag\"=\"Code\"),copy=TRUE)\nfire<-left_join(dia,fire,by=c(\"fmv\"=\"Code\"),copy=TRUE)\ninjuries<-left_join(fire,locale,by=c(\"location\"=\"Code\"),copy=TRUE)\n\nfor(i in 1:dim(injuries)[1]){\n  if(injuries[i,\"age\"]>=200){\n    injuries[i,\"age\"] =(injuries[i,\"age\"]-200)/12.0\n  }\n}\n\n\n#product_fre<-injuries %>% group_by(title) %>%\n#                    summarize(Pro_Counts=n()) %>%\n#                     top_n(20,Pro_Counts)%>% arrange(desc(Pro_Counts))\n\n  \n#body_fre<-injuries %>% group_by(BodyPart) %>%\n#                  summarize(Body_Counts=n()) %>%\n#                  top_n(20,Body_Counts) %>% arrange(desc(Body_Counts))\n\n#ggplot(product_fre,aes(x=title,y=Pro_Counts))+geom_bar(stat = \"identity\")+\n#  coord_flip() +ggtitle((\"Top 20 products\"))\n\n#ggplot(body_fre,aes(x=BodyPart,y=Body_Counts))+geom_bar(stat = \"identity\")+\n#  coord_flip() +ggtitle((\"Top 20 Body_Part\"))\n",
+    "created" : 1496107197426.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "2055167934",
+    "id" : "5791624E",
+    "lastKnownWriteTime" : 1496084994,
+    "path" : "G:/interviews/BI/BI_Developer_HW/BID_HW_Q4/global.R",
+    "project_path" : "global.R",
+    "properties" : {
+    },
+    "relative_order" : 3,
+    "source_on_save" : false,
+    "type" : "r_source"
+}

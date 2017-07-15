@@ -1,0 +1,17 @@
+{
+    "contents" : "\n# This is the server logic for a Shiny web application.\n# You can find out more about building applications with Shiny here:\n#\n# http://shiny.rstudio.com\n#\n\nlibrary(shiny)\n\n\nshinyServer(function(input, output) {\n  selected<-reactive({\n    injuries %>% filter(age>=input$age[1]&age<input$age[2], race == input$race,FMV == input$fmv)\n  })\n  \n  output$hist1<-renderPlot({\n   left_join(selected() %>% group_by(product) %>%\n               summarize(total_product=sum(weight)) %>%\n               top_n(15,total_product)%>% arrange(desc(total_product)),\n             selected() %>% group_by(product,sex)%>%\n               summarize(total_by_sex=sum(weight)),by=c(\"product\"=\"product\")) %>%\n      mutate(product = factor(product, levels = rev(unique(product)))) %>%\n      ggplot(aes(x = product, y = total_by_sex,group=sex,fill=sex))+geom_bar(stat = \"identity\")+\n      labs(y=\"Number of Injuries\", x =NULL , title=\"Top 15 Product\")+\n      coord_flip()\n      \n  })\n  \n  output$hist2<-renderPlot({\n    left_join(selected()%>% group_by(BodyPart) %>%\n                summarize(total_body=sum(weight)) %>% \n                top_n(15,total_body)%>% arrange(desc(total_body)),\n              selected()%>% group_by(BodyPart,sex) %>%\n                summarize(total_by_sex=sum(weight)),by=c(\"BodyPart\"=\"BodyPart\"))%>%\n      mutate(BodyPart = factor(BodyPart, levels = unique(BodyPart))) %>% \n      ggplot(aes(x=BodyPart,y=total_by_sex,fill=sex))+geom_bar(position=\"dodge\",stat = \"identity\")+\n      labs(x=NULL, y = \"Number of Injuries\", title=\"Top 15 Body Part\")\n    \n    \n  })\n  \n  output$hist3<-renderPlot({\n    left_join(selected()%>% group_by(Diagnosis) %>%\n                summarize(total_Dia=sum(weight)) %>% \n                top_n(15,total_Dia)%>% arrange(desc(total_Dia)),\n              selected()%>% group_by(Diagnosis,sex) %>%\n                summarize(total_by_sex=sum(weight)),by=c(\"Diagnosis\"=\"Diagnosis\"))%>%\n      mutate(Diagnosis = factor(Diagnosis, levels = rev(unique(Diagnosis)))) %>% \n      ggplot(aes(x=Diagnosis,y=total_by_sex))+geom_point(aes(shape = factor(sex)),size = 3)+\n      labs(x=NULL, y = \"Number of Injuries\", title=\"Top 15 Diagnosis\")+\n      coord_flip()\n  })\n  \n  output$hist4<-renderPlot({\n    selected()%>% filter(location!=0) %>% group_by(Location,sex) %>%\n      summarize(total_loc = sum(weight)) %>%\n      arrange(desc(total_loc)) %>%\n      \n      treemap(index=c('sex',\"Location\"),fontsize.labels=c(17,12),  fontcolor.labels=c(\"white\",\"black\"),\n              align.labels=list(\n                \n                c(\"left\", \"bottom\"),\n                c(\"center\", \"center\")\n              ),  overlap.labels=0.5,vSize=\"total_loc\",type='index',title='Location Distribution')\n  })\n  \n\n\n\n})\n",
+    "created" : 1495915292819.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "1840027277",
+    "id" : "F30AA097",
+    "lastKnownWriteTime" : 1496084994,
+    "path" : "G:/interviews/BI/BI_Developer_HW/BID_HW_Q4/server.R",
+    "project_path" : "server.R",
+    "properties" : {
+    },
+    "relative_order" : 2,
+    "source_on_save" : false,
+    "type" : "r_source"
+}
